@@ -1,0 +1,22 @@
+{
+  "name": "vue-todolist",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "@primevue/icons": "^4.0.1",
+    "@primevue/themes": "^4.0.1",
+    "primeicons": "^7.0.0",
+    "primevue": "^4.0.1",
+    "vue": "^3.4.31"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-vue": "^5.0.5",
+    "vite": "^5.3.4"
+  }
+}
