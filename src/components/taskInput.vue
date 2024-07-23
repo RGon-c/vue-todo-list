@@ -1,30 +1,36 @@
 <script>
 import { ref } from 'vue'
+import { useToast } from 'primevue/usetoast';
+
 export default {
-    emits: {
-        onAddTask({ title, description }) {
-            if (title == '' || description == '') {
-                alert('Заполните все поля')
-                return false
-            } else {
-                return true
-            }
-        }
-    },
+    emits: ['onAddTask'],
     setup(props, { emit }) {
+        const toast = useToast();
         const title = ref('')
         const description = ref('')
+        const titleReqired = ref(true)
+        const descriptionReqired = ref(true)
 
         const onAddTask = () => {
+            if (title.value === '' || description.value === '') {
+                titleReqired.value = false
+                descriptionReqired.value = false
+                return
+            }
             emit('onAddTask', { title: title.value, description: description.value })
+            toast.add({ severity: 'success', summary: 'Успешно', detail: 'Задача добавлена', life: 3000  })
             title.value = ''
             description.value = ''
+            titleReqired.value = true
+            descriptionReqired.value = true
         }
 
         return {
             title,
             description,
-            onAddTask
+            onAddTask,
+            titleReqired,
+            descriptionReqired
         }
     }
 
@@ -34,33 +40,37 @@ export default {
 <template>
     <div class="task-input my-list">
         <div class="container">
-            <FloatLabel>
-                <InputText id="title" v-model="title" type="text"/>
+            <div class="flex flex-col gap-2">
                 <label for="title">Название</label>
-            </FloatLabel>
-    
-            <FloatLabel>
-                <Textarea v-model="description" type="text" rows="5" cols="30" />
+                <InputText id="title" v-model="title" type="text" :invalid="!titleReqired" />
+                <Message severity="error" v-if="!titleReqired">Поле обязательно</Message>
+            </div>
+
+            <div class="flex flex-col gap-2">
                 <label>Описание</label>
-            </FloatLabel>
+                <Textarea v-model="description" type="text" rows="5" cols="30" :invalid="!descriptionReqired" />
+                <Message severity="error" v-if="!descriptionReqired">Поле обязательно</Message>
+            </div>
+
         </div>
-
-        
-        <Button label="Добавить" severity="success" @click="onAddTask" />
-
+        <Button label="Добавить" class="mt-6" severity="success" @click="onAddTask" />
     </div>
 </template>
 
 
 
 <style scoped>
-.task-input .container{
+.container{
+    margin-bottom: 20px;
+}
+.task-input .container {
     display: flex;
     flex-direction: column;
     gap: 20px 0px;
 }
+
 .task-input input,
-.task-input textarea{
+.task-input textarea {
     width: 100%;
 }
 </style>

@@ -6,12 +6,6 @@ export default {
     props: {
         model: {
             required: true,
-            default: {
-                id: 0,
-                title: 'Create Video',
-                description: 'Upload video',
-                status: true,
-            }
         }
     },
     setup(props, { emit }) {
@@ -28,13 +22,8 @@ export default {
     }
 
 }
-
 </script>
 <template>
-    <Toast />
-
-    <Button label="Success" severity="success" @click="showSuccess" />
-
     <div class="task-card-body">
         <div class="task-card-header">
             <h4>{{ model.title }}</h4>
@@ -56,6 +45,14 @@ export default {
     justify-content: space-between;
     align-items: center;
     margin-top: 50px;
-
+    border: 1px solid rgb(178, 178, 178);
+    background: rgba(0, 0, 0, 0.3);
+    backdrop-filter: blur(15px);
+    -webkit-backdrop-filter: blur(15px);
+    -moz-backdrop-filter: blur(15px);
+    -o-backdrop-filter: blur(15px);
+    -ms-backdrop-filter: blur(15px);
+    border-radius: 10px;
+    padding: 0 20px;
 }
 </style>
