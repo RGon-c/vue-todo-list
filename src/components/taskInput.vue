@@ -1,40 +1,32 @@
-<script>
+<script setup>
 import { ref } from 'vue'
 import { useToast } from 'primevue/usetoast';
 
-export default {
-    emits: ['onAddTask'],
-    setup(props, { emit }) {
-        const toast = useToast();
-        const title = ref('')
-        const description = ref('')
-        const titleReqired = ref(true)
-        const descriptionReqired = ref(true)
 
-        const onAddTask = () => {
-            if (title.value === '' || description.value === '') {
-                titleReqired.value = false
-                descriptionReqired.value = false
-                return
-            }
-            emit('onAddTask', { title: title.value, description: description.value })
-            toast.add({ severity: 'success', summary: 'Успешно', detail: 'Задача добавлена', life: 3000  })
-            title.value = ''
-            description.value = ''
-            titleReqired.value = true
-            descriptionReqired.value = true
-        }
+const emit = defineEmits(['onAddTask'])
+const toast = useToast();
+const title = ref('')
+const description = ref('')
+const titleReqired = ref(true)
+const descriptionReqired = ref(true)
 
-        return {
-            title,
-            description,
-            onAddTask,
-            titleReqired,
-            descriptionReqired
-        }
+const onAddTask = () => {
+    if (title.value === '' || description.value === '') {
+        titleReqired.value = false
+        descriptionReqired.value = false
+        return
     }
-
+    emit('onAddTask', { title: title.value, description: description.value })
+    toast.add({ severity: 'success', summary: 'Успешно', detail: 'Задача добавлена', life: 3000 })
+    
+    title.value = ''
+    description.value = ''
+    titleReqired.value = true
+    descriptionReqired.value = true
 }
+
+
+
 
 </script>
 <template>
@@ -42,27 +34,29 @@ export default {
         <div class="container">
             <div class="flex flex-col gap-2">
                 <label for="title">Название</label>
-                <InputText id="title" v-model="title" type="text" :invalid="!titleReqired" />
-                <Message severity="error" v-if="!titleReqired">Поле обязательно</Message>
+                <p-inputText id="title" v-model="title" type="text" :invalid="!titleReqired"></p-inputText>
+                <p-message severity="error" v-if="!titleReqired">Поле обязательно</p-message>
             </div>
 
             <div class="flex flex-col gap-2">
                 <label>Описание</label>
-                <Textarea v-model="description" type="text" rows="5" cols="30" :invalid="!descriptionReqired" />
-                <Message severity="error" v-if="!descriptionReqired">Поле обязательно</Message>
+                <p-textarea v-model="description" type="text" rows="5" cols="30"
+                    :invalid="!descriptionReqired"></p-textarea>
+                <p-message severity="error" v-if="!descriptionReqired">Поле обязательно</p-message>
             </div>
 
         </div>
-        <Button label="Добавить" class="mt-6" severity="success" @click="onAddTask" />
+        <p-button label="Добавить" class="mt-6" severity="success" @click="onAddTask"></p-button>
     </div>
 </template>
 
 
 
 <style scoped>
-.container{
+.container {
     margin-bottom: 20px;
 }
+
 .task-input .container {
     display: flex;
     flex-direction: column;

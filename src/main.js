@@ -1,12 +1,12 @@
 import { createApp } from 'vue'
-import './style.css'
+import { createPinia } from 'pinia'
 import App from './App.vue'
+import './style.css'
 
 
 import PrimeVue from 'primevue/config';
 import Aura from '@primevue/themes/aura';
 import 'primeicons/primeicons.css'
-
 
 import Button from 'primevue/button';
 import InputText from 'primevue/inputtext';
@@ -16,10 +16,7 @@ import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 import Message from 'primevue/message';
 
-
-
-
-
+const pinia = createPinia() // Создаем экземпляр Pinia
 const app = createApp(App)
 app.use(PrimeVue, {
     theme: {
@@ -27,13 +24,14 @@ app.use(PrimeVue, {
     },
 });
 app.use(ToastService)
+app.use(pinia)
 
-app.component('Button', Button)
-app.component('InputText', InputText)
-app.component('FloatLabel', FloatLabel)
-app.component('Textarea', Textarea)
-app.component('Toast', Toast)
-app.component('Message', Message)
+app.component('PButton', Button)
+app.component('PInputText', InputText)
+app.component('PFloatLabel', FloatLabel)
+app.component('PTextarea', Textarea)
+app.component('PToast', Toast)
+app.component('PMessage', Message)
 
 
 
