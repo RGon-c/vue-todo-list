@@ -1,52 +1,42 @@
-<script setup>
-import { ref } from 'vue'
+<script setup lang="ts">
+import { reactive, ref } from 'vue'
 import { useToast } from 'primevue/usetoast';
+import { useTaskListStore, type Task } from '../stores/useTaskListStore';
 
 
-const emit = defineEmits(['onAddTask'])
-const toast = useToast();
-const title = ref('')
-const description = ref('')
-const titleReqired = ref(true)
-const descriptionReqired = ref(true)
+const toast = useToast()
+const {addTask} = useTaskListStore()
 
-const onAddTask = () => {
-    if (title.value === '' || description.value === '') {
-        titleReqired.value = false
-        descriptionReqired.value = false
-        return
-    }
-    emit('onAddTask', { title: title.value, description: description.value })
+const task = reactive<Task>({
+    id: 0,
+    title: '',
+    description: '',
+    status: false
+})
+
+const addTaskWrapper = () => {
+    addTask(task)
     toast.add({ severity: 'success', summary: 'Успешно', detail: 'Задача добавлена', life: 3000 })
-    
-    title.value = ''
-    description.value = ''
-    titleReqired.value = true
-    descriptionReqired.value = true
 }
 
 
-
-
 </script>
+
 <template>
     <div class="task-input my-list">
         <div class="container">
             <div class="flex flex-col gap-2">
                 <label for="title">Название</label>
-                <p-inputText id="title" v-model="title" type="text" :invalid="!titleReqired"></p-inputText>
-                <p-message severity="error" v-if="!titleReqired">Поле обязательно</p-message>
+                <p-inputText id="title" v-model="task.title" type="text"></p-inputText>
             </div>
 
             <div class="flex flex-col gap-2">
                 <label>Описание</label>
-                <p-textarea v-model="description" type="text" rows="5" cols="30"
-                    :invalid="!descriptionReqired"></p-textarea>
-                <p-message severity="error" v-if="!descriptionReqired">Поле обязательно</p-message>
+                <p-textarea v-model="task.description" type="text" rows="5" cols="30"></p-textarea>
             </div>
 
         </div>
-        <p-button label="Добавить" class="mt-6" severity="success" @click="onAddTask"></p-button>
+        <p-button label="Добавить" class="mt-6" severity="success" @click="addTaskWrapper"></p-button>
     </div>
 </template>
 
