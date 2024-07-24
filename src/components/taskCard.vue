@@ -1,27 +1,18 @@
-<script>
-import { onMounted, ref } from 'vue'
-
-export default {
-    emits: ['onDone', 'onRemove'],
-    props: {
-        model: {
-            required: true,
-        }
-    },
-    setup(props, { emit }) {
-        const emitOnDone = () => {
-            emit('onDone')
-        }
-        const emitOnRemove = () => {
-            emit('onRemove')
-        }
-        return {
-            emitOnDone,
-            emitOnRemove
-        }
+<script setup>
+const emit = defineEmits(['onDone', 'onRemove'])
+const props = defineProps({
+    model: {
+        type: Object,
+        required: true,
     }
-
+})
+const emitOnDone = () => {
+    emit('onDone')
 }
+const emitOnRemove = () => {
+    emit('onRemove')
+}
+
 </script>
 <template>
     <div class="task-card-body">
@@ -30,9 +21,10 @@ export default {
             <p>{{ model.description }}</p>
         </div>
         <div class="task-card-btn">
-            <Button label="Выполнено" severity="success" raised @click="emitOnDone" v-if="!model.status"
-                icon="pi pi-check" />
-            <Button label="Удалить" severity="danger" raised @click="emitOnRemove" v-else icon="pi pi-trash" />
+            <p-button label="Выполнено" severity="success" raised @click="emitOnDone" v-if="!model.status"
+                icon="pi pi-check"></p-button>
+            <p-button label="Удалить" severity="danger" raised @click="emitOnRemove" v-else
+                icon="pi pi-trash"></p-button>
         </div>
     </div>
 </template>
