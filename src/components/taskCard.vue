@@ -1,7 +1,4 @@
 <script setup>
-
-import { useTaskListStore } from '../stores/taskList'
-
 const emit = defineEmits(['onDone', 'onRemove'])
 const props = defineProps({
     model: {
@@ -20,8 +17,8 @@ const emitOnRemove = () => {
 <template>
     <div class="task-card-body">
         <div class="task-card-header">
-            <h4>{{ tasks }}</h4>
-            <p>{{ tasks }}</p>
+            <h4>{{ model.title }}</h4>
+            <p>{{ model.description }}</p>
         </div>
         <div class="task-card-btn">
             <p-button label="Выполнено" severity="success" raised @click="emitOnDone" v-if="!model.status"
