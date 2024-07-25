@@ -17,6 +17,7 @@ const emitOnRemove = () => {
 <template>
     <div class="task-card-body">
         <div class="task-card-header">
+            <p>Задача №{{ model.id }}</p>
             <h4>{{ model.title }}</h4>
             <p>{{ model.description }}</p>
         </div>
