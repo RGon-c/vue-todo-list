@@ -3,9 +3,14 @@ import { reactive, ref } from 'vue'
 import { useToast } from 'primevue/usetoast';
 import { useTaskListStore, type Task } from '../stores/useTaskListStore';
 
+import { useVuelidate } from '@vuelidate/core';
+import { required } from '@vuelidate/validators';
+import { computed } from '@vue/reactivity';
 
 const toast = useToast()
-const {addTask} = useTaskListStore()
+const { addTask } = useTaskListStore()
+
+
 
 const task = reactive<Task>({
     id: 0,
@@ -14,10 +19,25 @@ const task = reactive<Task>({
     status: false
 })
 
+const rules = computed(() => ({
+    title: { required },
+    description: { required }
+}));
+
+const $v = useVuelidate(rules, task);
+
 const addTaskWrapper = () => {
-    addTask(task)
-    toast.add({ severity: 'success', summary: 'Успешно', detail: 'Задача добавлена', life: 3000 })
-}
+    $v.value.$touch();
+
+    if ($v.value.$invalid) return;
+    addTask(task);
+    toast.add({ severity: 'success', summary: 'Успешно', detail: 'Задача добавлена', life: 3000 });
+    
+    task.title = '';
+    task.description = '';
+
+    $v.value.$reset();
+};
 
 
 </script>
@@ -27,19 +47,18 @@ const addTaskWrapper = () => {
         <div class="container">
             <div class="flex flex-col gap-2">
                 <label for="title">Название</label>
-                <p-inputText id="title" v-model="task.title" type="text"></p-inputText>
+                <p-inputText id="title" v-model="task.title"></p-inputText>
+                <p-message v-if="$v.title.$dirty && $v.title.required.$invalid" severity="error">Поле обязательно</p-message>
             </div>
-
             <div class="flex flex-col gap-2">
                 <label>Описание</label>
-                <p-textarea v-model="task.description" type="text" rows="5" cols="30"></p-textarea>
+                <p-textarea v-model="task.description" rows="5" cols="30"></p-textarea>
+                <p-message v-if="$v.description.$dirty && $v.description.required.$invalid" severity="error">Поле обязательно</p-message>
             </div>
-
         </div>
         <p-button label="Добавить" class="mt-6" severity="success" @click="addTaskWrapper"></p-button>
     </div>
 </template>
-
 
 
 <style scoped>

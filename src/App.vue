@@ -17,7 +17,6 @@ const setDoneTask = (id) => {
   });
   tasks.map((x) => {
     if (x.id === id) x.status = true;
-
     return x;
   });
 };
