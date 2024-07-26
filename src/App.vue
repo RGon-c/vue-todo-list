@@ -3,6 +3,10 @@ import taskCard from "./components/taskCard.vue";
 import taskInput from "./components/taskInput.vue";
 import { useActionTaskCard } from './composables/useActionTaskCard.ts';
 const { removeTask, setDoneTask, tasks } = useActionTaskCard();
+
+
+
+
 </script>
 
 <template>
@@ -12,7 +16,7 @@ const { removeTask, setDoneTask, tasks } = useActionTaskCard();
     <taskInput></taskInput>
     <taskCard v-for="item in tasks" :key="item.id" :model="item">
       <template #actions="{ model }">
-        <p-button label="Выполнено" severity="success" raised @click="setDoneTask(model.id)" v-if="!model.status"
+        <p-button label="Завершить" severity="success" raised @click="setDoneTask(model.id)" v-if="!model.completed"
           icon="pi pi-check"></p-button>
         <p-button label="Удалить" severity="danger" raised @click="removeTask(model.id)" v-else
           icon="pi pi-trash"></p-button>

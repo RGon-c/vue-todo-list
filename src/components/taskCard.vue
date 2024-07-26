@@ -22,6 +22,9 @@ const props = defineProps({
 
 
 <style scoped>
+.task-card-header{
+    text-align: left;
+}
 .task-card-body {
     display: flex;
     justify-content: space-between;

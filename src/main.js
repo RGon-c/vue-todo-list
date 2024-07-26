@@ -15,7 +15,7 @@ import Toast from 'primevue/toast';
 import ToastService from 'primevue/toastservice';
 import Message from 'primevue/message';
 
-const pinia = createPinia() // Создаем экземпляр Pinia
+const pinia = createPinia() 
 const app = createApp(App)
 app.use(PrimeVue, {
     theme: {
