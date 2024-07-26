@@ -1,18 +1,10 @@
 <script setup>
-const emit = defineEmits(['onDone', 'onRemove'])
 const props = defineProps({
     model: {
         type: Object,
         required: true,
     }
 })
-const emitOnDone = () => {
-    emit('onDone')
-}
-const emitOnRemove = () => {
-    emit('onRemove')
-}
-
 </script>
 <template>
     <div class="task-card-body">
@@ -22,11 +14,8 @@ const emitOnRemove = () => {
             <p>{{ model.description }}</p>
         </div>
         <div class="task-card-btn">
-            <p-button label="Выполнено" severity="success" raised @click="emitOnDone" v-if="!model.status"
-                icon="pi pi-check"></p-button>
-            <p-button label="Удалить" severity="danger" raised @click="emitOnRemove" v-else
-                icon="pi pi-trash"></p-button>
-        </div>
+            <slot name="actions" :model="model"></slot>
+          </div>
     </div>
 </template>
 
