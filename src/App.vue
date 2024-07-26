@@ -1,52 +1,26 @@
 <script setup>
 import taskCard from "./components/taskCard.vue";
 import taskInput from "./components/taskInput.vue";
-import { useToast } from "primevue/usetoast";
-import { useTaskListStore } from "./stores/useTaskListStore";
-import { ref } from "vue";
-
-const { tasks } = useTaskListStore();
-const toast = useToast();
-
-const setDoneTask = (id) => {
-  toast.add({
-    severity: "success",
-    summary: "Успешно",
-    detail: "Задача выполнена",
-    life: 3000,
-  });
-  tasks.map((x) => {
-    if (x.id === id) x.status = true;
-    return x;
-  });
-};
-
-const removeTask = (id) => {
-  const index = tasks.findIndex((x) => x.id === id);
-  if (index !== -1) {
-    tasks.splice(index, 1);
-    toast.add({ severity: "error", summary: "Задача удалена", life: 3000 });
-  }
-};
+import { useActionTaskCard } from './composables/useActionTaskCard.ts';
+const { removeTask, setDoneTask, tasks } = useActionTaskCard();
 </script>
 
 <template>
   <main>
     <h1 class="title">TodoList</h1>
-    <p-toast />
-    <taskInput />
-    <taskCard
-      v-for="item in tasks"
-      :key="item.id"
-      @onRemove="() => removeTask(item.id)"
-      @onDone="() => setDoneTask(item.id)"
-      :model="item"
-    />
-    
-
+    <p-toast ref="toastMessage"></p-toast>
+    <taskInput></taskInput>
+    <taskCard v-for="item in tasks" :key="item.id" :model="item">
+      <template #actions="{ model }">
+        <p-button label="Выполнено" severity="success" raised @click="setDoneTask(model.id)" v-if="!model.status"
+          icon="pi pi-check"></p-button>
+        <p-button label="Удалить" severity="danger" raised @click="removeTask(model.id)" v-else
+          icon="pi pi-trash"></p-button>
+      </template>
+    </taskCard>
     <div class="empty-section" v-if="!tasks.length">
-      <img src="./assets/empty.png" alt="" />
-      Список задача пуст
+      <img src="./assets/empty.png" alt="Empty list" />
+      Список задач пуст
     </div>
   </main>
 </template>

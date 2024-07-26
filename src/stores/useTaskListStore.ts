@@ -19,11 +19,12 @@ export const useTaskListStore = defineStore("taskList", () => {
       status: false,
     };
 
+    
     tasks.push(taskToAdd);
   };
 
   return {
     tasks,
-    addTask,
+    addTask
   };
 });
