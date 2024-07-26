@@ -13,7 +13,7 @@ export const useTaskForm = defineStore("taskForm", () => {
     id: 0,
     title: "",
     description: "",
-    status: false,
+    completed: false,
   });
 
   const rules = {
@@ -24,7 +24,6 @@ export const useTaskForm = defineStore("taskForm", () => {
   const $v = useVuelidate(rules, task);
 
   const addTaskWrapper = () => {
-
     $v.value.$touch();
     if ($v.value.$invalid) return;
 
@@ -40,7 +39,6 @@ export const useTaskForm = defineStore("taskForm", () => {
     task.title = "";
     task.description = "";
     $v.value.$reset();
-    
   };
 
   return {

@@ -13,13 +13,13 @@ export const useActionTaskCard = defineStore("ActionTaskCard", () => {
       life: 3000,
     });
     tasks.map((x) => {
-      if (x.id === id) x.status = true;
+      if (x.id === id) x.completed = true;
       return x;
     });
   };
 
   const removeTask = (id: number) => {
-    const index = tasks.findIndex((x) => x.id === id);
+    const index: number = tasks.findIndex((x) => x.id === id);
     if (index !== -1) {
       tasks.splice(index, 1);
       toast.add({ severity: "error", summary: "Задача удалена", life: 3000 });
